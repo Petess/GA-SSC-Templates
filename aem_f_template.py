@@ -15,9 +15,9 @@ ALTERATIONS_    = '${aem_f_alterations}'
 LINE_NUMBER     =  '${aem_f_line_number}'
 EASTING_        = '${aem_f_easting}'
 NORTHING_       = '${aem_f_northing}'
-GROUND_ELEVATON = '${aem_f_ground_elevation}'
-ALTIMETER_      = '${aem_f_altimeter}'
-SECONDARY_X     = '${aem_f_Secondary_X}'
+GROUND_ELEVATION = '${aem_f_ground_elevation}'
+ALTIMETER_       = '${aem_f_altimeter}'
+SECONDARY_X      = '${aem_f_Secondary_X}'
 Z_COMPONENT_SECONDARY  = '${aem_f_Z_Component_Secondary}'
 FID_          = '${aem_f_FID}'
 TX_HEIGHT     = '${aem_f_tx_height}'
@@ -50,6 +50,8 @@ def findOccurrence( linelist, searchString):
     return -1
 
 def replaceInt( lines, entry, number ):
+    if ( int( number ) == 0 ):
+        return
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
         eprint( "entry: ", entry, "not found" )
@@ -58,6 +60,8 @@ def replaceInt( lines, entry, number ):
         re.sub( r"\d+", str(number), lines[lineOccurence] )
 
 def replaceColumnNumber( lines, entry, number ):
+    if ( int( number ) == 0 ):
+         return
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
         eprint( "entry: ", entry, "not found" )
@@ -66,7 +70,7 @@ def replaceColumnNumber( lines, entry, number ):
         re.sub( r"Column \d+", "Column " + str(number), lines[lineOccurence] )
 
 def replaceBoolean( lines, entry, number ):
-    if ( int(number) == 0 ):
+    if ( int( number ) == 0 ):
         return
     replaceString = "yes" if ( int(number) > 0 ) else "no"
     lineOccurence = findOccurrence( lines, entry )
@@ -87,49 +91,61 @@ def replaceString( lines, entry, string ):
 # Zcomponent may or usually has a - sign in front of it
 # This function replaces the number with a sign in front of 'Column' if required
 def replaceSignedColumn( lines, entry, number ):
+    if ( int( number ) == 0 ):
+        return
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
         print( "entry: ", entry, "not found" )
     else:
         if ( int( number ) < 0 ):
-             lines[lineOccurence] = \
+            lines[lineOccurence] = \
                 re.sub( r"(-)?Column \d+", "-Column " + str(abs(int(number))), lines[lineOccurence] )
-             # Make the number itself positive, insert - before column
+                # Make the number itself positive, insert - before column
         else:
-             # Just insert the number
-             lines[lineOccurence] = \
+            # Just insert the number
+            lines[lineOccurence] = \
                 re.sub( r"(-)?Column \d+", "Column " + str(number), lines[lineOccurence] )
 
 
 # Set the control and stm files
 controlFileDir = '/home/admin/AEMControlSTMFiles/'
+
+# Heliborn ones
+# controlFiles = [ 'Skytem_lm.con', 'Skytem_lm.con', 'VTEM-plus-7.3ms.con', 'XTEM.con' ]
+# stmFiles     = [ 'Skytem-LM.stm', 'Skytem-HM.stm', 'VTEM-plus-7.3ms.stm', 'XTEM.stm' ] 
+# Fixed wing
+controlFiles = [ 'Geotem-ppm.con', 'Spectrum11_Z.con', 'Tempest-galeisbstdem-do-not-solve-geometry.con' ]
+stmFiles = [ 'Geotem-ppm.stm', 'Spectrem-ppm-11windows.stm', ' Tempest-standard.stm' ]
+
 controlFileBaseFileName = '/home/admin/aem/ga-aem/examples/thomson-vtem/galeisbstdem/galeisbstdem.con'
-controlFiles = [ 'Skytem_lm.con', 'Skytem_lm.con', 'VTEM-plus-7.3ms.con', 'XTEM.con' ]
-stmFiles     = [ 'Skytem-LM.stm', 'Skytem-HM.stm', 'VTEM-plus-7.3ms.stm', 'XTEM.stm' ] 
-    
-controlFileBaseFileName = '/home/admin/aem/ga-aem/examples/thomson-vtem/galeisbstdem/galeisbstdem.con'
+stmFile='/home/admin/aem/ga-aem/examples/thomson-vtem/stmfiles/VTEM-plus-7.3ms-pulse-southernthomson.stm'
 
 # Set the system file 
-if ( CONTROL_FILE in range(1,4) ):
+if ( CONTROL_FILE in range(1,3) ):
     controlFileBaseFileName = controlFileDir + controlFiles[ CONTROL_FILE - 1]
 else:
     print "Control File out of Range"
 
-if ( STM_FILE in range(1,4) ):
+if ( STM_FILE in range(1,3) ):
     stmFile = controlFileDir + stmFiles[ STM_FILE - 1]
 else:
     print "STM File out of Range" 
-    
-# stmFile='/home/admin/aem/ga-aem/examples/thomson-vtem/stmfiles/VTEM-plus-7.3ms-pulse-southernthomson.stm'
 
 finput = open( controlFileBaseFileName,'r')
 lines = finput.readlines()
 
-columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_], [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
- ["FidNumber", FID_], ["TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ], [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , 
-[ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ] ,[ "RX_Yaw", RX_YAW ] ]
+columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_],
+                     [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
+                     [ "FidNumber", FID_], [ "TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ],
+                     [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , [ "TXRX_DY", TX_RX_DY ],
+                     [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ],
+                     [ "RX_Yaw", RX_YAW ] ]
 
-BoolsToReplace = [ ["PositiveLayerBottomDepths", POSITIVE_LAYER_BOTTOM_DEPTH],  [ "NegativeLayerBottomDepths", NEGATIVE_LAYER_BOTTOM_DEPTH], [ "InterfaceElevations", INTERFACE_ELEVATIONS ], [ "ParameterSensitivity", PARAMETER_SENSITIVITY ], [ "ParameterUncertainty", PARAMETER_UNCERTAINTY ], [ "PredictedData", PREDICTED_DATA ] ]
+BoolsToReplace = [ ["PositiveLayerBottomDepths", POSITIVE_LAYER_BOTTOM_DEPTH],
+                   [ "NegativeLayerBottomDepths", NEGATIVE_LAYER_BOTTOM_DEPTH],
+                   [ "InterfaceElevations", INTERFACE_ELEVATIONS ],
+                   [ "ParameterSensitivity", PARAMETER_SENSITIVITY ],
+                   [ "ParameterUncertainty", PARAMETER_UNCERTAINTY ], [ "PredictedData", PREDICTED_DATA ] ]
 
 replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
 
@@ -143,8 +159,8 @@ if ALTERATIONS != 0:
     replaceInt( lines, "MaximumIterations", MAXIMUM_ITERATIONS )
     replaceInt( lines, "Subsample", SUBSAMPLE_ )
 
-    replaceString( lines, "DataFile", INPUT_FILE )
-    replaceString( lines, "SystemFile", stmFile ) 
+replaceString( lines, "DataFile", INPUT_FILE )
+replaceString( lines, "SystemFile", stmFile ) 
 
 foutputfileName = 'OutControlFile.con'
 foutput = open( foutputfileName, 'w' )
