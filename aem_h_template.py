@@ -11,15 +11,15 @@ import re
 DATA_FILE     = '${aem_h_data_file}'
 CONTROL_FILE  = '${aem_h_control_file}'
 STM_FILE      = '${aem_h_system_file}'
-ALTERATIONS   = '${aem_h_Alter_Values}'
+ALTERATIONS_  = '${aem_h_Alter_Values}'
 LINE_NUMBER   = '${aem_h_line_number}'
-EASTING       = '${aem_h_easting}'
-NORTHING      = '${aem_h_northing}'
+EASTING_      = '${aem_h_easting}'
+NORTHING_     = '${aem_h_northing}'
 GROUND_ELEVATION = '${aem_h_ground_elevation}'
-ALTIMETER     = '${aem_h_altimeter}'
+ALTIMETER_    = '${aem_h_altimeter}'
 Z_COMPONENT_SECONDARY  = '${aem_h_Z_Comp_Secondary}'
 Z_COMPONENT_TERTIARY   = '${aem_h_Z_Comp_Tertiary}'
-FID           = '${aem_h_FID_Column}'
+FID_          = '${aem_h_FID_Column}'
 TX_HEIGHT     = '${aem_h_TX_Height}'
 TX_ROLL       = '${aem_h_TX_Roll}'
 TX_PITCH      = '${aem_h_TX_Pitch}'
@@ -37,12 +37,7 @@ PARAMETER_SENSITIVITY  = '${aem_h_parameter_sensitivity}'
 PARAMETER_UNCERTAINTY  = '${aem_h_parameter_uncertainty}'
 PREDICTED_DATA         = '${aem_h_predicted_data}'
 MAXIMUM_ITERATIONS     = '${aem_h_max_iterations}'
-SUBSAMPLE              = '${aem_h_subsample}'
-		
-
-# Control variables to control the iterations and sampling - allows the runs to be shortened
-SUBSAMPLE_ = '${subSample}'
-MAXIMUM_ITERATIONS = '${maximumIterations}'
+SUBSAMPLE_             = '${aem_h_subsample}'
 
 def findOccurrence( linelist, searchString):
     for x, line in enumerate(linelist):
@@ -50,7 +45,10 @@ def findOccurrence( linelist, searchString):
             return x
     return -1
 
+
 def replaceInt( lines, entry, number ):
+    if ( int( number ) == 0 ):
+        return
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
         eprint( "entry: ", entry, "not found" )
@@ -58,8 +56,9 @@ def replaceInt( lines, entry, number ):
         lines[lineOccurence] = \
         re.sub( r"\d+", str(number), lines[lineOccurence] )
 
-
 def replaceColumnNumber( lines, entry, number ):
+    if ( int( number ) == 0 ):
+         return
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
         eprint( "entry: ", entry, "not found" )
@@ -67,8 +66,9 @@ def replaceColumnNumber( lines, entry, number ):
         lines[lineOccurence] = \
         re.sub( r"Column \d+", "Column " + str(number), lines[lineOccurence] )
 
-
 def replaceBoolean( lines, entry, number ):
+    if ( int( number ) == 0 ):
+        return
     replaceString = "yes" if ( int(number) > 0 ) else "no"
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
