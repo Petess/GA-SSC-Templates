@@ -144,9 +144,10 @@ BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM ],
                    [ "ParameterUncertainty", PARAMETER_UNCERTAINTY ],
                    [ "PredictedData", PREDICTED_DATA ] ]
 
-replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
 
 if int( ALTERATIONS_ ) != 0:
+    replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
+
     for item in columnsToReplace:
         replaceColumnNumber( lines, item[0], item[1] )
 
@@ -156,6 +157,7 @@ if int( ALTERATIONS_ ) != 0:
     replaceInt( lines, "MaximumIterations", MAXIMUM_ITERATIONS )
     replaceInt( lines, "Subsample", SUBSAMPLE_ )
 
+# Always need to update the data and system files
 replaceString( lines, "DataFile", DATA_FILE )
 replaceString( lines, "SystemFile", stmFile ) 
 

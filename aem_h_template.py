@@ -16,9 +16,9 @@ LINE_NUMBER   = '${aem_h_line_number}'
 EASTING_      = '${aem_h_easting}'
 NORTHING_     = '${aem_h_northing}'
 GROUND_ELEVATION = '${aem_h_ground_elevation}'
-ALTIMETER_    = '${aem_h_altimeter}'
-Z_COMPONENT_SECONDARY  = '${aem_h_Z_Comp_Secondary}'
-Z_COMPONENT_TERTIARY   = '${aem_h_Z_Comp_Tertiary}'
+ALTIMETER_       = '${aem_h_altimeter}'
+Z_COMPONENT_SECONDARY = '${aem_h_Z_Comp_Secondary}'
+Z_COMPONENT_TERTIARY  = '${aem_h_Z_Comp_Tertiary}'
 FID_          = '${aem_h_FID_Column}'
 TX_HEIGHT     = '${aem_h_TX_Height}'
 TX_ROLL       = '${aem_h_TX_Roll}'
@@ -108,26 +108,33 @@ finput = open(finputfileName,'r')
 lines = finput.readlines()
 
 
-columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_], [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
- ["FidNumber", FID_], ["TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ], [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , 
-[ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ] ,[ "RX_Yaw", RX_YAW ] ]
+columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_],
+                     [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
+                     ["FidNumber", FID_], ["TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ],
+                     [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , 
+                     [ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ],
+                     ["RX_Pitch", RX_PITCH ] ,[ "RX_Yaw", RX_YAW ] ]
 
-BoolsToReplace = [ ["PositiveLayerBottomDepths", POSITIVE_LAYER_BOTTOM_DEPTH],  [ "NegativeLayerBottomDepths", NEGATIVE_LAYER_BOTTOM_DEPTH], [ "InterfaceElevations", INTERFACE_ELEVATIONS ], [ "ParameterSensitivity", PARAMETER_SENSITIVITY ], [ "ParameterUncertainty", PARAMETER_UNCERTAINTY ], [ "PredictedData", PREDICTED_DATA ] ]
+BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM],
+                   [ "NegativeLayerBottomDepths", NEG_LAYER_BOTTOM],
+                   [ "InterfaceElevations", INTERFACE_ELEVATION ],
+                   [ "ParameterSensitivity", PARAMETER_SENSITIVITY ],
+                   [ "ParameterUncertainty", PARAMETER_UNCERTAINTY ],
+                   [ "PredictedData", PREDICTED_DATA ] ]
 
-replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
+if int( ALTERATIONS_ ) != 0:
+    replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
 
-for item in columnsToReplace:
-    replaceColumnNumber( lines, item[0], item[1] )
+    for item in columnsToReplace:
+        replaceColumnNumber( lines, item[0], item[1] )
 
+    for elBulli in BoolsToReplace:
+        replaceBoolean( lines, elBulli[0], elBulli[1] )
 
+    replaceInt( lines, "MaximumIterations", MAXIMUM_ITERATIONS )
+    replaceInt( lines, "Subsample", SUBSAMPLE_ )
 
-for elBulli in BoolsToReplace:
-    replaceBoolean( lines, elBulli[0], elBulli[1] )
-
-replaceInt( lines, "MaximumIterations", MAXIMUM_ITERATIONS )
-replaceInt( lines, "Subsample", SUBSAMPLE_ )
-
-replaceString( lines, "DataFile", INPUT_FILE )
+replaceString( lines, "DataFile", DATA_FILE )
 replaceString( lines, "SystemFile", stmFile ) 
 
 foutputfileName = 'OutControlFile.con'
