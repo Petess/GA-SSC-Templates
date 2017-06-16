@@ -102,11 +102,35 @@ def replaceSignedColumn( lines, entry, number ):
                 re.sub( r"(-)?Column \d+", "Column " + str(number), lines[lineOccurence] )
 
 
+
+# Set the control and stm files
+controlFileDir = '/home/admin/AEMControlSTMFiles/'
+
+# Heliborn control files
+controlFiles = [ 'Skytem_lm.con', 'Skytem_lm.con', 'VTEM-plus-7.3ms.con', 'XTEM.con' ]
+stmFiles     = [ 'Skytem-LM.stm', 'Skytem-HM.stm', 'VTEM-plus-7.3ms.stm', 'XTEM.stm' ] 
+# Fixed wing
+# controlFiles = [ 'Geotem-ppm.con', 'Spectrum11_Z.con', 'Tempest-galeisbstdem-do-not-solve-geometry.con' ]
+# stmFiles = [ 'Geotem-ppm.stm', 'Spectrem-ppm-11windows.stm', 'Tempest-standard.stm' ]
+
+controlFileBaseFileName = '/home/admin/aem/ga-aem/examples/thomson-vtem/galeisbstdem/galeisbstdem.con'
+stmFile='/home/admin/aem/ga-aem/examples/thomson-vtem/stmfiles/VTEM-plus-7.3ms-pulse-southernthomson.stm'
+
+# Set the system file 
+if ( int( CONTROL_FILE ) in range(1,5) ):
+    controlFileBaseFileName = controlFileDir + controlFiles[ int( CONTROL_FILE ) - 1]
+else:
+    print "Control File out of Range"
+
+if ( int( STM_FILE ) in range(1,5) ):
+    stmFile = controlFileDir + stmFiles[ int ( STM_FILE ) - 1]
+else:
+    print "STM File out of Range" 
+
 finputfileName = '/home/admin/aem/ga-aem/examples/thomson-vtem/galeisbstdem/galeisbstdem.con'
 stmFile='/home/admin/aem/ga-aem/examples/thomson-vtem/stmfiles/VTEM-plus-7.3ms-pulse-southernthomson.stm'
 finput = open(finputfileName,'r')
 lines = finput.readlines()
-
 
 columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_],
                      [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 

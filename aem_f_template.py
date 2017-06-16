@@ -145,6 +145,7 @@ BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM ],
                    [ "PredictedData", PREDICTED_DATA ] ]
 
 
+# if user has requested alterations
 if int( ALTERATIONS_ ) != 0:
     replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
 
