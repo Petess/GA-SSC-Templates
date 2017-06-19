@@ -8,30 +8,30 @@ import sys
 import re
 
 # Set parameters
-DATA_FILE     = '${aem_h_data_file}'
-CONTROL_FILE  = '${aem_h_control_file}'
-STM_FILE      = '${aem_h_system_file}'
-ALTERATIONS_  = '${aem_h_Alter_Values}'
-LINE_NUMBER   = '${aem_h_line_number}'
-EASTING_      = '${aem_h_easting}'
-NORTHING_     = '${aem_h_northing}'
-GROUND_ELEVATION = '${aem_h_ground_elevation}'
-ALTIMETER_       = '${aem_h_altimeter}'
+DATA_FILE     = '${aem_h_data_file}'     
+CONTROL_FILE  = '${aem_h_control_file}'  
+STM_FILE      = '${aem_h_system_file}'   
+ALTERATIONS_  = '${aem_h_Alter_Values}'  
+LINE_NUMBER   = '${aem_h_line_number}'   
+EASTING_      = '${aem_h_easting}'       
+NORTHING_     = '${aem_h_northing}'             
+GROUND_ELEVATION = '${aem_h_ground_elevation}' 
+ALTIMETER_       = '${aem_h_altimeter}' 
 Z_COMPONENT_SECONDARY = '${aem_h_Z_Comp_Secondary}'
-Z_COMPONENT_TERTIARY  = '${aem_h_Z_Comp_Tertiary}'
-FID_          = '${aem_h_FID_Column}'
-TX_HEIGHT     = '${aem_h_TX_Height}'
+Z_COMPONENT_TERTIARY  = '${aem_h_Z_Comp_Tertiary}'  ## unused 
+FID_          = '${aem_h_FID_Column}' 
+TX_HEIGHT     = '${aem_h_TX_Height}' 
 TX_ROLL       = '${aem_h_TX_Roll}'
-TX_PITCH      = '${aem_h_TX_Pitch}'
+TX_PITCH      = '${aem_h_TX_Pitch}' 
 TX_YAW        = '${aem_h_TX_Yaw}'
 TX_RX_DX      = '${aem_h_TXRX_DX}'
 TX_RX_DY      = '${aem_h_TXRX_DY}'
 TX_RX_DZ      = '${aem_h_TXRX_DZ}'
 RX_ROLL       = '${aem_h_RX_Roll}'
 RX_PITCH      = '${aem_h_RX_Pitch}'
-RX_YAW        = '${aem_h_RX_Yaw}'
+RX_YAW        = '${aem_h_RX_Yaw}'  
 POS_LAYER_BOTTOM    = '${aem_h_pve_bottom_layer_depth}'
-NEG_LAYER_BOTTOM    = '${aem_h_nve_bottom_layer_depth}'
+NEG_LAYER_BOTTOM    = '${aem_h_nve_bottom_layer_depth}' # used
 INTERFACE_ELEVATION = '${aem_h_interface_elevations}'
 PARAMETER_SENSITIVITY  = '${aem_h_parameter_sensitivity}'
 PARAMETER_UNCERTAINTY  = '${aem_h_parameter_uncertainty}'
@@ -134,10 +134,11 @@ lines = finput.readlines()
 
 columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_],
                      [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
-                     ["FidNumber", FID_], ["TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ],
-                     [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , 
-                     [ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ],
-                     ["RX_Pitch", RX_PITCH ] ,[ "RX_Yaw", RX_YAW ] ]
+                     ["FidNumber", FID_],
+                     ["TX_Height", TX_HEIGHT], 
+                     [ "TX_Roll", TX_ROLL ], [ "TX_Pitch", TX_PITCH ], [ "TX_Yaw", TX_YAW ],
+                     [ "TXRX_DX", TX_RX_DX ] , [ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ],
+                     [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ] ,[ "RX_Yaw", RX_YAW ] ]
 
 BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM],
                    [ "NegativeLayerBottomDepths", NEG_LAYER_BOTTOM],
@@ -148,6 +149,7 @@ BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM],
 
 if int( ALTERATIONS_ ) != 0:
     replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_SECONDARY )
+    replaceSignedColumn( lines, "ZComponentSecondary", Z_COMPONENT_TERTIARY )
 
     for item in columnsToReplace:
         replaceColumnNumber( lines, item[0], item[1] )
