@@ -1,0 +1,108 @@
+Control Begin
+
+	NumberOfSystems = 1
+	
+	EMSystem1 Begin
+		SystemFile      = Spectrem-ppm-11windows.stm
+		UseXComponent   = no
+		UseYComponent   = no
+		UseZComponent   = yes
+
+		InvertTotalField = no
+		ReconstructPrimaryFieldFromInputGeometry = no
+
+		EstimateNoiseFromModel = yes
+
+		XMultiplicativeNoise   = 2
+		XAdditiveNoise         = 15885 3236 1871 637 362 353 276 265 233 154 154
+		XComponentPrimary      = Column 9
+		XComponentSecondary    = Column 10
+
+		ZMultiplicativeNoise   = 2
+		ZAdditiveNoise         = 3511 1143 488 340 305 284 265 237 184 115 115
+		ZComponentPrimary      = Column 32
+		ZComponentSecondary    = Column 33
+	EMSystem1 End
+
+	Earth Begin
+		NumberOfLayers = 30
+	Earth End
+
+	Options Begin
+		SolveConductivity = yes
+		SolveThickness    = no
+
+		SolveTX_Height = no
+		SolveTX_Roll   = no
+		SolveTX_Pitch  = no
+		SolveTX_Yaw    = no
+		SolveTXRX_DX   = no
+		SolveTXRX_DY   = no
+		SolveTXRX_DZ   = no
+		SolveRX_Roll   = no
+		SolveRX_Pitch  = no
+		SolveRX_Yaw    = no
+
+		AlphaConductivity = 1.0
+		AlphaThickness    = 1.0
+		AlphaGeometry     = 1.0
+		AlphaSmoothness   = 100000
+
+		MinimumPhiD = 1.0
+		MinimumPercentageImprovement = 1.0
+		MaximumIterations = 100
+	Options End
+
+	Input Begin
+		DataFile    = ../../../line_data/11355.asc
+		HeaderLines = 0
+		Subsample   = 1
+		Columns Begin
+			SurveyNumber    = 0
+			DateNumber      = 0
+			FlightNumber    = 0
+			LineNumber      = Column 1
+			FidNumber       = Column 2
+			Easting         = Column 4
+			Northing        = Column 5
+			GroundElevation = Column 7
+			Altimeter       = Column 6
+
+			TX_Height       = Column 6
+			TX_Roll         = 0
+			TX_Pitch        = 0
+			TX_Yaw          = 0
+			TXRX_DX         = -131
+			TXRX_DY         = 0
+			TXRX_DZ         = -36
+			RX_Roll         = 0
+			RX_Pitch        = 0
+			RX_Yaw          = 0
+
+			ReferenceModel Begin
+				Conductivity   = 0.001
+				Thickness      = 2.00  2.30  2.50  2.90  3.20  3.70  4.10  4.70  5.20  5.90  6.70  7.50  8.50  9.60 10.80 12.20 13.80 15.50 17.50 19.80 22.30 25.20 28.40 32.10 36.20 40.80 46.00 51.90 58.60
+			ReferenceModel End
+
+			StdDevReferenceModel Begin
+				Conductivity   = 3.0
+			StdDevReferenceModel End
+		Columns End
+	Input End
+
+	Output Begin
+		DataFile = output\inversion.output.asc
+		LogFile  = output\inversion.output.log
+
+		PositiveLayerBottomDepths = yes
+		NegativeLayerBottomDepths = no
+		InterfaceElevations       = no
+		ParameterSensitivity      = no
+		ParameterUncertainty      = no
+		PredictedData             = yes
+	Output End
+
+Control End
+
+
+

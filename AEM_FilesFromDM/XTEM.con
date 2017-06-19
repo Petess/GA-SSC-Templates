@@ -1,0 +1,97 @@
+Control Begin
+
+	NumberOfSystems = 1
+	
+	EMSystem1 Begin
+		SystemFile      = XTEM.stm
+		UseXComponent   = no
+		UseYComponent   = no
+		UseZComponent   = yes
+		InvertTotalField = no
+		ReconstructPrimaryFieldFromInputGeometry = no
+
+		EstimateNoiseFromModel = yes
+		ZMultiplicativeNoise   = 5
+		ZAdditiveNoise         = 9254.3093      3651.6016      2321.5641      2481.8847      1884.5341      1364.5248      1004.4913      697.08097      580.57519      460.62419      399.86014      342.03119      281.53894      232.16766      193.82987       156.4031      112.03572      57.482381      28.610102      27.670401      29.688899       28.11342      23.129207      19.409867      18.290999      17.508749      16.762025      17.004607      15.153368      16.924428
+		ZComponentSecondary    = -Column 17
+	EMSystem1 End
+
+	Earth Begin
+		NumberOfLayers = 30
+	Earth End
+
+	Options Begin
+		SolveConductivity = yes
+		SolveThickness    = no
+
+		SolveTX_Height = no
+		SolveTX_Roll   = no
+		SolveTX_Pitch  = no
+		SolveTX_Yaw    = no
+		SolveTXRX_DX   = no
+		SolveTXRX_DY   = no
+		SolveTXRX_DZ   = no
+		SolveRX_Roll   = no
+		SolveRX_Pitch  = no
+		SolveRX_Yaw    = no
+
+		AlphaConductivity = 1.0
+		AlphaThickness    = 1.0
+		AlphaGeometry     = 1.0
+		AlphaSmoothness   = 100000
+
+		MinimumPhiD = 1.0
+		MinimumPercentageImprovement = 1.0
+		MaximumIterations = 100
+	Options End
+
+	Input Begin
+		DataFile    = /short/r17/rcb547/projects/butcherbird/line_data/electromagnetic.dat
+		HeaderLines = 0
+		Subsample   = 2
+		Columns Begin
+			SurveyNumber    = Column 2
+			DateNumber      = Column 6
+			FlightNumber    = Column 3
+			LineNumber      = Column 4
+			FidNumber       = Column 5
+			Easting         = Column 10
+			Northing        = Column 11
+			GroundElevation = Column 14
+			Altimeter       = Column 12
+
+			TX_Height       = Column 12
+			TX_Roll         = 0
+			TX_Pitch        = 0
+			TX_Yaw          = 0
+			TXRX_DX         = 0
+			TXRX_DY         = 0
+			TXRX_DZ         = 0
+			RX_Roll         = 0
+			RX_Pitch        = 0
+			RX_Yaw          = 0
+
+			ReferenceModel Begin
+				Conductivity   = 0.001
+				Thickness      = 2.00  2.30  2.50  2.90  3.20  3.70  4.10  4.70  5.20  5.90  6.70  7.50  8.50  9.60 10.80 12.20 13.80 15.50 17.50 19.80 22.30 25.20 28.40 32.10 36.20 40.80 46.00 51.90 58.60
+			ReferenceModel End
+
+			StdDevReferenceModel Begin
+				Conductivity   = 3.0
+			StdDevReferenceModel End
+		Columns End
+	Input End
+
+	Output Begin
+		DataFile = output\inversion.output.asc
+		LogFile  = output\inversion.output.log
+
+		PositiveLayerBottomDepths = no
+		NegativeLayerBottomDepths = no
+		InterfaceElevations       = no
+		ParameterSensitivity      = no
+		ParameterUncertainty      = no
+		PredictedData             = yes
+	Output End
+
+Control End
