@@ -132,10 +132,10 @@ lines = finput.readlines()
 
 columnsToReplace = [ ["LineNumber", LINE_NUMBER], ["Easting", EASTING_ ], ["Northing", NORTHING_],
                      [ "GroundElevation", GROUND_ELEVATION ], [ "Altimeter", ALTIMETER_ ], 
-                     [ "FidNumber", FID_], [ "TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ],
-                     [ "TX_Yaw", TX_YAW ], [ "TXRX_DX", TX_RX_DX ] , [ "TXRX_DY", TX_RX_DY ],
-                     [ "TXRX_DZ", TX_RX_DZ ], [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ],
-                     [ "RX_Yaw", RX_YAW ] ]
+                     [ "FidNumber", FID_],
+                     [ "TX_Height", TX_HEIGHT], [ "TX_Pitch", TX_PITCH ], [ "TX_Yaw", TX_YAW ],
+                     [ "TXRX_DX", TX_RX_DX ] , [ "TXRX_DY", TX_RX_DY ], [ "TXRX_DZ", TX_RX_DZ ],
+                     [ "RX_Roll", RX_ROLL ], ["RX_Pitch", RX_PITCH ], [ "RX_Yaw", RX_YAW ] ]
 
 BoolsToReplace = [ ["PositiveLayerBottomDepths", POS_LAYER_BOTTOM ],
                    [ "NegativeLayerBottomDepths", NEG_LAYER_BOTTOM ],

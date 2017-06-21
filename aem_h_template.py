@@ -76,7 +76,7 @@ def replaceBoolean( lines, entry, number ):
     else:
         lines[lineOccurence] = \
         re.sub( r"= yes|= no", "= " + replaceString, lines[lineOccurence] )
-
+        
 def replaceString( lines, entry, string ):
     lineOccurence = findOccurrence( lines, entry )
     if ( (-1) == lineOccurence ):
